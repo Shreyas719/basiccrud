@@ -22,7 +22,8 @@
                 <div class="card shadow">
                     <div class="card-header">
                         <h3>Category List
-                            <a href="{{url('category/create')}}"><button class="btn btn-outline-primary float-end">Add
+                            <a href="{{url('/')}}"><button class="btn btn-outline-secondary float-end mx-1">Main Page</button></a>
+                            <a href="{{url('category/create')}}"><button class="btn btn-outline-primary float-end mx-1">Add
                                     Category</button></a>
                         </h3>
                     </div>
@@ -39,19 +40,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($categories as $item)
+                                    @forelse($categories as $item)
                                     <tr>
                                         <td>{{$item->id}}</td>
                                         <td>{{$item->name}}</td>
                                         <td>{{$item->description}}</td>
                                         <td class="text-{{$item->status ? 'success':'danger'}}">{{$item->status ? 'Visible':'Hidden'}}</td>
                                         <td>
-                                        <a href="{{route('category.show',$item->id)}}"><button class="btn btn-outline-info mx-2"><i class="fa-solid fa-eye"></i></button></a>
-                                        <a href="{{route('category.edit',$item->id)}}"><button class="btn btn-outline-warning mx-2"><i class="fa-solid fa-pen-to-square"></i></button></a>
-                                        <a href="{{route('category.destroy',$item->id)}}"><button class="btn btn-outline-danger mx-2"><i class="fa-solid fa-trash"></i></button></a>
+                                        <a href="{{route('category.show',$item->id)}}"><button class="btn btn-outline-info m-1"><i class="fa-solid fa-eye"></i></button></a>
+                                        <a href="{{route('category.edit',$item->id)}}"><button class="btn btn-outline-warning m-1"><i class="fa-solid fa-pen-to-square"></i></button></a>
+
+                                        <form action="{{ route('category.destroy',$item->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-outline-danger m-1"><i class="fa-solid fa-trash" onclick="return confirm('Are you sure..?')"></i></button>
+                                        </form>
                                     </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="text-danger text-center">No records found...!</td>
+                                    </tr>
+
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
